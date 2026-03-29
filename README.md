@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>SecurePass</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f0f5fa;
+      font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+      color: #1a2f3f;
+      line-height: 1.55;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 1rem 2rem 2.5rem;
+    }
+
+    .site-header {
+      background: #ffffff;
+      border-radius: 1.2rem;
+      margin-bottom: 1.8rem;
+      padding: 0.9rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid #dfe7ef;
+    }
+
+    .logo h2 {
+      font-weight: 700;
+      font-size: 1.7rem;
+      color: #175d73;
+      letter-spacing: -0.3px;
+    }
+    .logo span {
+      font-size: 0.7rem;
+      color: #5b7f99;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .nav-links a {
+      color: #2b5876;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 1.1rem;
+      border-radius: 2rem;
+      transition: 0.2s;
+      font-size: 0.9rem;
+    }
+    .nav-links a:hover {
+      background: #e4edf5;
+      color: #0f4a62;
+    }
+    .nav-links a.active {
+      background: #1d6f73;
+      color: white;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 1.3rem;
+      padding: 1.8rem 2.2rem 2.2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      border: 1px solid #e2eaf2;
+      margin-bottom: 1.8rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0c4a5e;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1a6b73;
+      margin: 1.3rem 0 0.7rem;
+      border-left: 4px solid #359f8b;
+      padding-left: 0.8rem;
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #236b73;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-sub {
+      color: #4d6f8a;
+      border-left: 3px solid #359f8b;
+      padding-left: 1rem;
+      margin: 0.3rem 0 1.6rem;
+      font-size: 1rem;
+    }
+
+    .grid-two, .grid-three {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.6rem;
+      margin: 1.2rem 0;
+    }
+    .info-card {
+      background: #fbfefe;
+      border-radius: 1rem;
+      padding: 1.3rem 1.3rem 1.4rem;
+      border: 1px solid #e4edf3;
+      transition: 0.1s;
+    }
+    .info-card h3 {
+      margin-bottom: 0.6rem;
+    }
+    .info-card p {
+      color: #2f4a62;
+      font-size: 0.93rem;
+    }
+    .warning-card {
+      background: #fffbf0;
+      border-left: 5px solid #e68a2e;
+      padding: 1rem 1.2rem;
+      border-radius: 0.9rem;
+      margin: 1rem 0;
+    }
+    .tool-group {
+      background: #f9fcfd;
+      border-radius: 1.1rem;
+      padding: 1.3rem;
+      margin: 1.2rem 0;
+      border: 1px solid #e0eaf2;
+    }
+    .tool-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem;
+      margin-top: 1rem;
+    }
+    .tool-card {
+      flex: 1;
+      min-width: 260px;
+      background: white;
+      border: 1px solid #e0eaf0;
+      border-radius: 1rem;
+      padding: 1.2rem;
+    }
+    .password-box, .encoded-output {
+      background: #f0f6fc;
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      padding: 0.8rem;
+      border-radius: 1.5rem;
+      text-align: center;
+      word-break: break-all;
+      margin: 0.8rem 0;
+      border: 1px solid #cbdde9;
+    }
+    button {
+      background: #2c7a6b;
+      border: none;
+      color: white;
+      font-weight: 500;
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: 0.2s;
+      margin-right: 0.6rem;
+      margin-top: 0.3rem;
+    }
+    button:hover {
+      background: #1d5f53;
+    }
+    .btn-outline {
+      background: transparent;
+      color: #2c7a6b;
+      border: 1px solid #bbd6cf;
+    }
+    .btn-outline:hover {
+      background: #eef7f4;
+    }
+    input, textarea {
+      padding: 0.65rem 1rem;
+      border-radius: 2rem;
+      border: 1px solid #cbdbe2;
+      width: 100%;
+      font-size: 0.9rem;
+      margin: 0.5rem 0;
+      background: white;
+      font-family: inherit;
+    }
+    textarea {
+      border-radius: 1rem;
+      resize: vertical;
+    }
+    .result-area {
+      background: #f0f6fa;
+      border-radius: 1rem;
+      padding: 0.8rem 1rem;
+      margin-top: 0.7rem;
+      font-size: 0.88rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1.5rem 0 0.5rem;
+      color: #6a8aaa;
+      font-size: 0.75rem;
+      border-top: 1px solid #dfe8f0;
+      margin-top: 0.5rem;
+    }
+    hr {
+      margin: 1rem 0;
+      border-color: #e2ecf3;
+    }
+    @media (max-width: 750px) {
+      .container { padding: 0.8rem 1rem; }
+      .panel { padding: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="site-header">
+    <div class="logo">
+      <h2>SecurePass</h2>
+   
+    </div>
+    <div class="nav-links" id="navMenu">
+      <a href="#" data-page="home" class="active">Home</a>
+      <a href="#" data-page="threats">Threats & Risks</a>
+      <a href="#" data-page="vm-encoding">VM & Encryption</a>
+      <a href="#" data-page="tools">Security Tools</a>
+      <a href="#" data-page="practices">Best Practices</a>
+      <a href="#" data-page="about">About</a>
+    </div>
+  </div>
+  <div id="appContent"></div>
+
+</div>
+
+<script>
+
+
+
+  const secureChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
+  function generateStrongPassword(length = 18) {
+    let pwd = "";
+    for (let i = 0; i < length; i++) pwd += secureChars[Math.floor(Math.random() * secureChars.length)];
+
+
+
+    if (!/[A-Z]/.test(pwd) || !/[a-z]/.test(pwd) || !/[0-9]/.test(pwd) || !/[!@#$%^&*()_+\-=[\]{}|;:,.<>?]/.test(pwd)) {
+      return generateStrongPassword(length);
+    }
+    return pwd;
+  }
+  function copyToClipboard(text, label = "text") {
+    if (!text || text.includes("click generate") || text === "") return alert("Generate or encode content first");
+    navigator.clipboard.writeText(text).then(() => alert(`${label} copied to clipboard`)).catch(() => alert("Copy manually"));
+  }
+
+
+
+  function base64Encode(str) {
+    try {
+      return btoa(unescape(encodeURIComponent(str)));
+    } catch(e) { return "Encoding error: invalid characters"; }
+  }
+  function base64Decode(str) {
+    try {
+      return decodeURIComponent(escape(atob(str)));
+    } catch(e) { return "Decoding error: invalid base64 string"; }
+  }
+
+
+
+  function caesarCipher(text, shift) {
+    shift = ((shift % 26) + 26) % 26;
+    return text.split('').map(ch => {
+      if (ch >= 'a' && ch <= 'z') return String.fromCharCode((ch.charCodeAt(0) - 97 + shift) % 26 + 97);
+      if (ch >= 'A' && ch <= 'Z') return String.fromCharCode((ch.charCodeAt(0) - 65 + shift) % 26 + 65);
+      return ch;
+    }).join('');
+  }
+
+ 
+
+
+function renderThreats() {
+  return `
+    <div class="panel">
+      <h1>Digital Threats: Detailed Analysis</h1>
+      <div class="section-sub">What puts you at risk and how attackers exploit vulnerabilities.</div>
+      <h2>Malware Categories</h2>
+      <div class="grid-two">
+        <div class="info-card"><h3>Ransomware</h3><p>Encrypts files and demands payment. Modern variants exfiltrate data before encryption (double extortion). Prevention: offline backups, email filtering, application whitelisting.</p></div>
+        <div class="info-card"><h3>Spyware & Keyloggers</h3><p>Record keystrokes, capture passwords, and monitor activity. Often bundled with cracked software. Use endpoint protection and avoid untrusted downloads.</p></div>
+        <div class="info-card"><h3>Trojan Horses</h3><p>Disguised as legitimate software. Creates backdoors for remote access. Always verify software sources and checksums.</p></div>
+        <div class="info-card"><h3>Worms & Botnets</h3><p>Self-replicating malware that spreads across networks, turning devices into bots for DDoS attacks. Patch vulnerabilities promptly.</p></div>
+      </div>
+      <h2>Social Engineering & Deception</h2>
+      <div class="grid-two">
+        <div class="info-card"><h3>Phishing & Spear Phishing</h3><p>Fraudulent emails impersonating trusted entities. Spear phishing targets specific individuals with personalized info. Check sender domains, avoid urgent requests.</p></div>
+        <div class="info-card"><h3>Pretexting & Baiting</h3><p>Attackers create false scenarios to extract info. Baiting offers physical media (USB) loaded with malware. Never insert unknown devices.</p></div>
+      </div>
+      <h2>Network & Infrastructure Threats</h2>
+      <div class="grid-two">
+        <div class="info-card"><h3>Man-in-the-Middle (MITM)</h3><p>Attackers intercept communication on public Wi-Fi or compromised networks. Always use HTTPS, avoid sensitive transactions on open networks, consider VPN.</p></div>
+        <div class="info-card"><h3>DNS Spoofing & Hijacking</h3><p>Redirects traffic to malicious sites. Use DNSSEC and trusted DNS resolvers (Cloudflare 1.1.1.1, Quad9).</p></div>
+        <div class="info-card"><h3>Zero-Day Exploits</h3><p>Attacks on unpatched software vulnerabilities. Enable automatic updates and use exploit mitigation tools.</p></div>
+        <div class="info-card"><h3>Credential Stuffing</h3><p>Automated login attempts using leaked passwords. Never reuse passwords; use a password manager.</p></div>
+      </div>
+      <div class="warning-card"><strong>Real-world impact:</strong> Identity theft, financial loss, reputational damage, and psychological distress. Proactive defense is essential.</div>
+    </div>
+  `;
+}
+
+
+function renderHome() {
+  return `
+    <div class="panel" style="padding:0; overflow:hidden; border:none;">
+
+     
+      <div style="
+        background: linear-gradient(135deg, #1d6f73, #3a9fbf);
+        color: white;
+        padding: 3.2rem 2.2rem 2.6rem;
+      ">
+        <h1 style="font-size: 2.7rem; font-weight:700;">
+          Cybersecurity Starts With You
+        </h1>
+
+        <p style="
+          max-width: 620px;
+          margin-top: 0.9rem;
+          font-size: 1.05rem;
+          opacity: 0.95;
+        ">
+          Understand modern cyber threats, explore powerful security tools, and
+          build strong digital defense habits through practical learning.
+        </p>
+      </div>
+
+     
+      <div style="padding: 2.2rem;">
+
+       
+        <div class="grid-three">
+
+          <div class="info-card" style="text-align:center;">
+            <h3>Threat Awareness</h3>
+            <p>Learn how attackers use phishing, malware, and social engineering to exploit users.</p>
+          </div>
+
+          <div class="info-card" style="text-align:center;">
+            <h3>Security Tools</h3>
+            <p>Use password managers, encryption, and virtual machines to protect your data.</p>
+          </div>
+
+          <div class="info-card" style="text-align:center;">
+            <h3>Defense Strategy</h3>
+            <p>Build layered security using best practices and modern protection techniques.</p>
+          </div>
+
+        </div>
+
+        <hr style="margin: 2rem 0;">
+
+        <!-- Extra Section -->
+        <div class="grid-two">
+
+          <div class="info-card">
+            <h3>Why Cybersecurity Matters</h3>
+            <p>
+              Cyber attacks target individuals and organizations daily. A single weak password
+              or careless click can lead to data breaches, financial loss, or identity theft.
+            </p>
+          </div>
+
+          <div class="info-card">
+            <h3>Your First Line of Defense</h3>
+            <p>
+              Awareness is your strongest protection. Understanding threats and using the right
+              tools significantly reduces your risk online.
+            </p>
+          </div>
+
+        </div>
+
+        
+        <div class="warning-card" style="margin-top: 1.8rem;">
+          <strong>Important:</strong> Security is not a single tool — it is a continuous process of awareness,
+          prevention, and adaptation.
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+  function renderVmEncoding() {
+    return `
+      <div class="panel">
+        <h1>Virtual Machines & Encryption Concepts</h1>
+        <div class="section-sub">Isolation environments and cryptographic fundamentals.</div>
+        <h2>Virtual Machines (VM) — Deep Dive</h2>
+        <div class="grid-two">
+          <div class="info-card"><h3>What is a Virtual Machine?</h3><p>A VM is a software-based emulation of a physical computer. It runs an operating system (guest) inside your main OS (host) with isolated resources. Hypervisors like VirtualBox, VMware Workstation, and KVM manage hardware virtualization.</p></div>
+          <div class="info-card"><h3>Why Use VMs for Security?</h3><p>Analyze malware safely — ransomware executed inside a VM cannot encrypt host files. Test suspicious applications, browse risky sites, or simulate network attacks without harming your main system. Use snapshots to revert to clean state after testing.</p></div>
+          <div class="info-card"><h3>Best Practices for VM Security</h3><p>Disable shared folders and clipboard when analyzing malware. Use host-only networking to prevent internet access. Always keep VM software updated. Consider using Whonix or Tails for privacy-focused tasks.</p></div>
+          <div class="info-card"><h3>Advanced Use: Sandboxing & Reverse Engineering</h3><p>Security researchers use VMs with debuggers (IDA Pro, x64dbg) to reverse malware. Tools like Cuckoo Sandbox automate dynamic analysis. VMs also enable testing of firewall rules and network configurations.</p></div>
+        </div>
+        <h2>Encoding vs Encryption vs Hashing</h2>
+        <div class="grid-two">
+          <div class="info-card"><h3>Encoding (Base64)</h3><p>Transforms data for safe transmission over protocols. No secrecy — easily reversible. Example: email attachments, JSON web tokens. Used for compatibility, not protection.</p></div>
+          <div class="info-card"><h3>Encryption (AES, GPG)</h3><p>Uses a secret key to scramble data. Only authorized parties can decrypt. AES-256 is standard for data-at-rest; TLS secures data-in-transit. Never roll your own crypto.</p></div>
+          <div class="info-card"><h3>Hashing (SHA-256, bcrypt)</h3><p>One-way function for password storage and integrity checks. Cannot be reversed. Salting prevents rainbow table attacks.</p></div>
+          <div class="info-card"><h3>Real Encryption Tools</h3><p>VeraCrypt: full disk/container encryption. GnuPG (GPG): email/file encryption. Signal/WhatsApp: end-to-end encrypted messaging.</p></div>
+        </div>
+        <h2>Interactive: Encoding & Simple Cipher</h2>
+        <div class="tool-group">
+          <p style="margin-bottom: 0.5rem;">Try Base64 encoding (used in web APIs) or Caesar cipher (historical shift cipher). Note: these are <strong>not secure encryption</strong> — they demonstrate data transformation.</p>
+          <textarea id="vmMsgInput" rows="2" placeholder="Enter text to encode/decode..."></textarea>
+          <div>
+            <button id="vmEncodeBase64">Base64 Encode</button>
+            <button id="vmDecodeBase64">Base64 Decode</button>
+            <button id="vmCaesarEnc">Caesar Cipher (+3 shift)</button>
+            <button id="vmCaesarDec">Caesar Cipher (-3 shift)</button>
+          </div>
+          <div id="vmEncodingResult" class="result-area">Result will appear here</div>
+        </div>
+        <div class="warning-card"><strong>Takeaway:</strong> Virtual machines are essential for safe malware analysis. For real encryption, use established tools like VeraCrypt, OpenSSL, or GPG. Encoding is not encryption — never use Base64 to protect secrets.</div>
+      </div>
+    `;
+  }
+
+  function renderTools() {
+    return `
+      <div class="panel">
+        <h1>Security Toolbox</h1>
+        <div class="section-sub">Practical utilities for stronger defenses.</div>
+        <div class="tool-row">
+          <div class="tool-card">
+            <h3>Strong Password Generator</h3>
+            <p>Generates random 18-character passwords with uppercase, lowercase, digits, and symbols.</p>
+            <div class="password-box" id="pwdGenDisplay">click generate</div>
+            <button id="genPwdBtn">Generate Password</button>
+            <button id="copyPwdBtn" class="btn-outline">Copy Password</button>
+          </div>
+          <div class="tool-card">
+            <h3>Message Encoder / Decoder</h3>
+            <p>Base64 encoding and Caesar cipher (educational). Real encryption requires proper tools.</p>
+            <textarea id="toolMsgInput" rows="2" placeholder="Your message..."></textarea>
+            <div>
+              <button id="toolEncodeBase64">Base64 Encode</button>
+              <button id="toolDecodeBase64">Base64 Decode</button>
+              <button id="toolCaesarEnc">Caesar (+3)</button>
+              <button id="toolCaesarDec">Caesar (-3)</button>
+            </div>
+            <div id="toolEncodingResult" class="result-area">Output</div>
+          </div>
+        </div>
+        <div class="tool-group">
+          <h3>Recommended Security Tools (External)</h3>
+          <p><strong>Password Managers:</strong> Bitwarden (open-source), KeePassXC (offline), 1Password. Store unique passwords per site.</p>
+          <p><strong>Disk Encryption:</strong> VeraCrypt (cross-platform), BitLocker (Windows), LUKS (Linux). Encrypt entire drives or create encrypted containers.</p>
+          <p><strong>Virtualization:</strong> VirtualBox (free), VMware Workstation Player, QEMU. Isolate risky environments.</p>
+          <p><strong>Secure Communication:</strong> Signal (messaging), ProtonMail (email), Tor Browser (anonymous browsing).</p>
+          <p><strong>Antivirus & EDR:</strong> Windows Defender (built-in), Malwarebytes, or open-source ClamAV for additional scanning.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderPractices() {
+    return `
+      <div class="panel">
+        <h1>Defensive Best Practices</h1>
+        <div class="section-sub">Adopt these habits to significantly reduce risk.</div>
+        <div class="grid-two">
+          <div class="info-card"><h3>Password Hygiene</h3><p>Use a password manager to generate and store unique 16+ character passwords. Enable Two-Factor Authentication (2FA) via TOTP (Authy, Aegis) or hardware keys (YubiKey). Avoid SMS 2FA when possible.</p></div>
+          <div class="info-card"><h3>Update Everything</h3><p>Enable automatic updates for OS, browsers, and software. Unpatched vulnerabilities are the top entry point for attackers. Consider using tools like Patch My PC or Winget for Windows.</p></div>
+          <div class="info-card"><h3>Backup Strategy (3-2-1 Rule)</h3><p>3 copies of data, 2 different media types, 1 offsite backup. Use encrypted backups (VeraCrypt, BorgBackup). Test restoration regularly.</p></div>
+          <div class="info-card"><h3>Network Hardening</h3><p>Change default router passwords, disable WPS, use WPA3 or WPA2-AES. Consider VLANs for IoT devices. Use a firewall (pfSense, Opnsense) for advanced control.</p></div>
+          <div class="info-card"><h3>Privacy & Browser Security</h3><p>Use uBlock Origin, Firefox with Enhanced Tracking Protection, or Brave. Disable third-party cookies. Consider using DNS over HTTPS (DoH) with Cloudflare or Quad9.</p></div>
+          <div class="info-card"><h3>Email & Phishing Protection</h3><p>Never click links in unsolicited emails. Verify sender via separate channel. Use email aliases (SimpleLogin, Firefox Relay) to protect your primary address.</p></div>
+          <div class="info-card"><h3>Physical Security</h3><p>Lock devices when unattended. Use full-disk encryption. Consider privacy screens in public spaces. Be aware of shoulder surfing.</p></div>
+          <div class="info-card"><h3>Incident Response Plan</h3><p>If compromised: disconnect from network, change critical passwords from a clean device, restore from backups, and report to relevant authorities.</p></div>
+        </div>
+        <div class="warning-card"><strong>Security mindset:</strong> Defense in depth — layer multiple protections. No single tool guarantees safety. Regular education and vigilance are your strongest assets.</div>
+      </div>
+    `;
+  }
+
+  function renderAbout() {
+    return `
+      <div class="panel">
+        <h1>About SecurePass</h1>
+        <div class="section-sub">Educational cybersecurity awareness project</div>
+        <div class="info-card"><h3>Project Mission</h3><p>This platform delivers comprehensive knowledge about digital threats, practical defensive tools (virtual machines, password management, encryption concepts), and actionable best practices. Built to demonstrate front-end development skills while promoting security literacy for all internet users.</p></div>
+        <div class="info-card"><h3>Technologies Used</h3><p>Pure HTML5, CSS3, and vanilla JavaScript. Fully responsive design with multi-page navigation, interactive encoding tools, and detailed educational content. No external libraries or frameworks ensure lightweight performance and accessibility.</p></div>
+        <div class="info-card"><h3>Educational Focus</h3><p>Topics covered: malware taxonomy, phishing mechanisms, virtual machine isolation, encryption vs encoding, password security, backup strategies, and network hardening. All examples are for educational purposes to build awareness and foundational security skills.</p></div>
+        <div class="info-card"><h3>Important Note</h3><p>The encoding tools demonstrate Base64 and Caesar cipher for learning only. For real-world encryption, always use trusted, audited tools like VeraCrypt, OpenSSL, or GnuPG. Security is a continuous learning process — stay curious and cautious.</p></div>
+      </div>
+    `;
+  }
+
+
+  function attachToolsEvents() {
+    const genBtn = document.getElementById("genPwdBtn");
+    const copyBtn = document.getElementById("copyPwdBtn");
+    const pwdDiv = document.getElementById("pwdGenDisplay");
+    if (genBtn && pwdDiv) {
+      genBtn.onclick = () => { pwdDiv.innerText = generateStrongPassword(18); };
+      copyBtn.onclick = () => { if (pwdDiv.innerText !== "click generate") copyToClipboard(pwdDiv.innerText, "Password"); else alert("Generate a password first"); };
+    }
+    const msgInput = document.getElementById("toolMsgInput");
+    const outDiv = document.getElementById("toolEncodingResult");
+    if (msgInput && outDiv) {
+      document.getElementById("toolEncodeBase64")?.addEventListener("click", () => { outDiv.innerText = base64Encode(msgInput.value); });
+      document.getElementById("toolDecodeBase64")?.addEventListener("click", () => { outDiv.innerText = base64Decode(msgInput.value); });
+      document.getElementById("toolCaesarEnc")?.addEventListener("click", () => { outDiv.innerText = caesarCipher(msgInput.value, 3); });
+      document.getElementById("toolCaesarDec")?.addEventListener("click", () => { outDiv.innerText = caesarCipher(msgInput.value, -3); });
+    }
+  }
+
+  function attachVmEvents() {
+    const vmInput = document.getElementById("vmMsgInput");
+    const vmOut = document.getElementById("vmEncodingResult");
+    if (vmInput && vmOut) {
+      document.getElementById("vmEncodeBase64")?.addEventListener("click", () => { vmOut.innerText = base64Encode(vmInput.value); });
+      document.getElementById("vmDecodeBase64")?.addEventListener("click", () => { vmOut.innerText = base64Decode(vmInput.value); });
+      document.getElementById("vmCaesarEnc")?.addEventListener("click", () => { vmOut.innerText = caesarCipher(vmInput.value, 3); });
+      document.getElementById("vmCaesarDec")?.addEventListener("click", () => { vmOut.innerText = caesarCipher(vmInput.value, -3); });
+    }
+  }
+
+  function renderPage(pageId) {
+    const content = document.getElementById("appContent");
+    if (pageId === "home") content.innerHTML = renderHome();
+    else if (pageId === "threats") content.innerHTML = renderThreats();
+    else if (pageId === "vm-encoding") { content.innerHTML = renderVmEncoding(); attachVmEvents(); }
+    else if (pageId === "tools") { content.innerHTML = renderTools(); attachToolsEvents(); }
+    else if (pageId === "practices") content.innerHTML = renderPractices();
+    else if (pageId === "about") content.innerHTML = renderAbout();
+    else content.innerHTML = renderHome();
+    document.querySelectorAll(".nav-links a").forEach(link => {
+      if (link.dataset.page === pageId) link.classList.add("active");
+      else link.classList.remove("active");
+    });
+  }
+
+  function initNavigation() {
+    document.querySelectorAll(".nav-links a").forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        renderPage(link.dataset.page);
+      });
+    });
+  }
+  initNavigation();
+  renderPage("home");
+</script>
+</body>
+</html>
